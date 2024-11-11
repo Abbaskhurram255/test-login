@@ -29,13 +29,13 @@ app.post("/register", async (req, res) => {
             };
             users.push(newUser);
             console.log("User list", users);
-
+            //setTimeout(() => (res.redirect("./login.html")), 3000);
             res.send(
                 "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login.html'>login</a></div><br><br><div align='center'><a href='./registration.html'>Register another user</a></div>"
             );
         } else {
             res.send(
-                "<div align ='center'><h2>Email already used</h2></div><br><br><div align='center'><a href='./registration.html'>Register again</a></div>"
+                "<div align ='center'><h2>Email already registered. Please login with the same data!</h2></div><br><br><div align='center'><a href='./registration.html'>Register again</a></div>"
             );
         }
     } catch {
