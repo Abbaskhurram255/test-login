@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const users = require("./data").userDB;
 const dotenv = require("dotenv");
-const fs = require("fs");
+const fs = require("fs");
+
 
 const app = express();
 const server = http.createServer(app);
@@ -59,7 +60,13 @@ app.post("/register", async (req, res) => {
         }
     } catch (e) {
         console.log(e);
-        res.send("Internal server error");
+        res.sendFile(
+            path.join(
+                __dirname,
+                "./client",
+                "500.html"
+            )
+        );
     }
 });
 
@@ -92,8 +99,15 @@ app.post("/login", async (req, res) => {
 
             res.sendFile(path.join(__dirname, "./client/login", "403.html"));
         }
-    } catch {
-        res.send("Internal server error");
+    } catch (e) {
+    	console.log(e);
+        res.sendFile(
+            path.join(
+                __dirname,
+                "./client",
+                "500.html"
+            )
+        );
     }
 });
 const PORT = 3002;
