@@ -2,13 +2,15 @@ const express = require("express");
 const http = require("http");
 const bcrypt = require("bcrypt");
 const path = require("path");
-const bodyParser = require("body-parser");
 const users = require("./data").userDB;
+const dotenv = require("dotenv");
+const fs = require("fs");
+const promises = fs.promises;
 
 const app = express();
 const server = http.createServer(app);
-
-app.use(bodyParser.urlencoded({ extended: false }));
+dotenv.config();
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./client")));
 
 app.get("/", (req, res) => {
@@ -19,6 +21,18 @@ app.post("/register", async (req, res) => {
     try {
         let foundUser = users.find((data) => req.body.email === data.email);
         if (!foundUser) {
+            //fs.writeFile("./data.json", JSON.stringify(users));
+            /*function save(item=users, path = "./data.json") {
+                if (!fs.stat(path)) {
+                    fs.writeFile(path, JSON.stringify([item]));
+                } else {
+                    let data = fs.readFile(path);
+                    let list = data.length ? JSON.parse(data) : [];
+                    if (list instanceof Array) list = [...users, ...list];
+                    else list = item;
+                    fs.writeFile(path, JSON.stringify(list));
+                }
+            }*/
             let hashPassword = await bcrypt.hash(req.body.password, 10);
 
             let newUser = {
@@ -31,14 +45,19 @@ app.post("/register", async (req, res) => {
             console.log("User list", users);
             //setTimeout(() => (res.redirect("./login.html")), 3000);
             res.send(
-                "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login.html'>login</a></div><br><br><div align='center'><a href='./registration.html'>Register another user</a></div>"
+                "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login'>login</a></div><br><br>"
             );
         } else {
-            res.send(
-                "<div align ='center'><h2>Email already registered. Please login with the same data!</h2></div><br><br><div align='center'><a href='./registration.html'>Register again</a></div>"
+            res.sendFile(
+                path.join(
+                    __dirname,
+                    "./client/register",
+                    "already-registered.html"
+                )
             );
         }
-    } catch {
+    } catch (e) {
+        console.log(e);
         res.send("Internal server error");
     }
 });
@@ -56,27 +75,28 @@ app.post("/login", async (req, res) => {
             );
             if (passwordMatch) {
                 let usrname = foundUser.username;
-                res.send(
-                    `<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='./login.html'>logout</a></div>`
+                //usrname = usrname.split(/(?<=\w+)\W(?=\w+)/g).map((x) => x[0].toUpperCase() + x.slice(1)).join("");
+                res.sendFile(
+                    path.join(__dirname, "./client/login", "success.html")
                 );
             } else {
-                res.send(
-                    "<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='./login.html'>login again</a></div>"
+                console.error("Unauthorized user");
+                res.sendFile(
+                    path.join(__dirname, "./client/login", "403.html")
                 );
             }
         } else {
             let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
             await bcrypt.compare(req.body.password, fakePass);
 
-            res.send(
-                "<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align='center'><a href='./login.html'>login again<a><div>"
-            );
+            res.sendFile(path.join(__dirname, "./client/login", "403.html"));
         }
     } catch {
         res.send("Internal server error");
     }
 });
+const PORT = 3002;
 
-server.listen(3002, function () {
-    console.log("server is listening on port: 3002");
+server.listen(PORT, function () {
+    console.log(`server is listening on port: ${PORT}`);
 });
