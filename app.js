@@ -21,7 +21,7 @@ app.post("/register", async (req, res) => {
         let foundUser = users.find((data) => req.body.email === data.email);
         if (!foundUser) {
             //fs.writeFileSync("./data.json", JSON.stringify(users));
-            /*function save(item=users, path = "./data.json") {
+            /*function save(item=users, path = "./client/data.json") {
                 if (!fs.stat(path)) {
                     fs.writeFile(path, JSON.stringify(item));
                 } else {
@@ -47,7 +47,7 @@ app.post("/register", async (req, res) => {
             res.send(
                 "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login'>login</a></div><br><br>"
             );
-            fs.writeFileSync("./data.json", JSON.stringify(users));
+            //fs.writeFileSync("./client/data.json", JSON.stringify(users));
         } else {
             res.sendFile(
                 path.join(
