@@ -4,8 +4,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const users = require("./data").userDB;
 const dotenv = require("dotenv");
-const fs = require("fs");
-const promises = fs.promises;
+const fs = require("fs");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,10 +20,10 @@ app.post("/register", async (req, res) => {
     try {
         let foundUser = users.find((data) => req.body.email === data.email);
         if (!foundUser) {
-            //fs.writeFile("./data.json", JSON.stringify(users));
+            //fs.writeFileSync("./data.json", JSON.stringify(users));
             /*function save(item=users, path = "./data.json") {
                 if (!fs.stat(path)) {
-                    fs.writeFile(path, JSON.stringify([item]));
+                    fs.writeFile(path, JSON.stringify(item));
                 } else {
                     let data = fs.readFile(path);
                     let list = data.length ? JSON.parse(data) : [];
@@ -33,6 +32,7 @@ app.post("/register", async (req, res) => {
                     fs.writeFile(path, JSON.stringify(list));
                 }
             }*/
+            
             let hashPassword = await bcrypt.hash(req.body.password, 10);
 
             let newUser = {
@@ -47,6 +47,7 @@ app.post("/register", async (req, res) => {
             res.send(
                 "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login'>login</a></div><br><br>"
             );
+            fs.writeFileSync("./data.json", JSON.stringify(users));
         } else {
             res.sendFile(
                 path.join(
@@ -75,7 +76,7 @@ app.post("/login", async (req, res) => {
             );
             if (passwordMatch) {
                 let usrname = foundUser.username;
-                //usrname = usrname.split(/(?<=\w+)\W(?=\w+)/g).map((x) => x[0].toUpperCase() + x.slice(1)).join("");
+                usrname = usrname.split(/(?<=\w+)\W(?=\w+)/g).map((x) => x[0].toUpperCase() + x.slice(1)).join(" ");
                 res.sendFile(
                     path.join(__dirname, "./client/login", "success.html")
                 );
