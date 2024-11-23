@@ -15,9 +15,69 @@
             }
 
             .attention{
+                -webkit-animation: attention 2s 2;
+                -moz-animation: attention 2s 2;
+                -ms-animation: attention 2s 2;
+                -o-animation: attention 2s 2;
                 animation: attention 2s 2;
                 color: red;
                 transform: translateY(0) scaleX(1.2)
+            }
+            @-webkit-keyframes attention {
+                0% {
+                    transform: translateY(-100%) skew(-45deg);
+                    opacity: 0;
+
+                }
+                70% {
+                    transform: scale(1.3);
+                }
+                100% {
+                    transform: translateY(0) scaleX(1.2);
+                    opacity: 1;
+                }
+            }
+            @-moz-keyframes attention {
+                0% {
+                    transform: translateY(-100%) skew(-45deg);
+                    opacity: 0;
+
+                }
+                70% {
+                    transform: scale(1.3);
+                }
+                100% {
+                    transform: translateY(0) scaleX(1.2);
+                    opacity: 1;
+                }
+            }
+            @-ms-keyframes attention {
+                0% {
+                    transform: translateY(-100%) skew(-45deg);
+                    opacity: 0;
+
+                }
+                70% {
+                    transform: scale(1.3);
+                }
+                100% {
+                    transform: translateY(0) scaleX(1.2);
+                    opacity: 1;
+                }
+            }
+            @-o-keyframes attention {
+                0% {
+                    transform: translateY(-100%) skew(-45deg);
+                    opacity: 0;
+
+                }
+                70% {
+                    transform: scale(1.3);
+                }
+                100% {
+                    transform: translateY(0) scaleX(1.2);
+                    opacity: 1;
+                }
             }
             @keyframes attention {
                 0% {
