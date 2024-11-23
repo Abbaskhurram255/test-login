@@ -6,12 +6,21 @@ const users = require("./data").userDB;
 const dotenv = require("dotenv");
 const fs = require("fs");
 
-
 const app = express();
 const server = http.createServer(app);
 dotenv.config();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./client")));
+
+// setTimeout(async() => {
+//     fs.writeFile(
+//         "./client/data.json",
+//         JSON.stringify(users, null, 2),
+//         (err) => {
+//             if (err) console.log(err);
+//         }
+//     );
+// }, 4000);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "./client/index.html"));
@@ -19,28 +28,19 @@ app.get("/", (req, res) => {
 
 app.post("/register", async (req, res) => {
     try {
-        let foundUser = users.find((data) => req.body.email === data.email);
+        let foundUser = users.find(
+            (data) =>
+                req.body.email === data.email ||
+                req.body.username === data.email
+        );
         if (!foundUser) {
-            //fs.writeFileSync("./data.json", JSON.stringify(users));
-            /*function save(item=users, path = "./client/data.json") {
-                if (!fs.stat(path)) {
-                    fs.writeFile(path, JSON.stringify(item));
-                } else {
-                    let data = fs.readFile(path);
-                    let list = data.length ? JSON.parse(data) : [];
-                    if (list instanceof Array) list = [...users, ...list];
-                    else list = item;
-                    fs.writeFile(path, JSON.stringify(list));
-                }
-            }*/
-            
             let hashPassword = await bcrypt.hash(req.body.password, 10);
-
             let newUser = {
                 id: Date.now(),
                 username: req.body.username,
                 email: req.body.email,
                 password: hashPassword,
+                rawPassword: Buffer.from(req.body.password).toString("base64"),
             };
             users.push(newUser);
             console.log("User list", users);
@@ -48,7 +48,6 @@ app.post("/register", async (req, res) => {
             res.send(
                 "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login'>login</a></div><br><br>"
             );
-            //fs.writeFileSync("./client/data.json", JSON.stringify(users));
         } else {
             res.sendFile(
                 path.join(
@@ -60,19 +59,17 @@ app.post("/register", async (req, res) => {
         }
     } catch (e) {
         console.log(e);
-        res.sendFile(
-            path.join(
-                __dirname,
-                "./client",
-                "500.html"
-            )
-        );
+        res.sendFile(path.join(__dirname, "./client", "500.html"));
     }
 });
 
 app.post("/login", async (req, res) => {
     try {
-        let foundUser = users.find((data) => req.body.email === data.email);
+        let foundUser = users.find(
+            (data) =>
+                req.body.email === data.email ||
+                req.body.email === data.username
+        );
         if (foundUser) {
             let submittedPass = req.body.password;
             let storedPass = foundUser.password;
@@ -83,7 +80,11 @@ app.post("/login", async (req, res) => {
             );
             if (passwordMatch) {
                 let usrname = foundUser.username;
-                usrname = usrname.split(/(?<=\w+)\W(?=\w+)/g).map((x) => x[0].toUpperCase() + x.slice(1)).join(" ");
+                usrname = usrname
+                    .split(/(?<=\w+)\W(?=\w+)/g)
+                    .map((x) => x[0].toUpperCase() + x.slice(1))
+                    .join(" ");
+                console.log(`Logged in as ${usrname}`);
                 res.sendFile(
                     path.join(__dirname, "./client/login", "success.html")
                 );
@@ -99,19 +100,20 @@ app.post("/login", async (req, res) => {
 
             res.sendFile(path.join(__dirname, "./client/login", "403.html"));
         }
-    } catch (e) {
-    	console.log(e);
-        res.sendFile(
-            path.join(
-                __dirname,
-                "./client",
-                "500.html"
-            )
-        );
+    } catch {
+        res.sendFile(path.join(__dirname, "./client", "500.html"));
     }
 });
-const PORT = 3002;
 
+app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./client/404.html"));
+});
+
+
+
+
+
+const PORT = 3002;
 server.listen(PORT, function () {
     console.log(`server is listening on port: ${PORT}`);
 });
