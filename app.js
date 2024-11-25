@@ -106,7 +106,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/404.html"));
+    res.status(404).sendFile(path.join(__dirname, "./client/404.html"));
 });
 
 
