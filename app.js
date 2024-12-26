@@ -28,7 +28,7 @@ app.post("/register", async (req, res) => {
     try {
         let foundUser = users.find(
             (data) =>
-                req.body.email === data.email
+                req.body.email === data.email || req.body.email === data.username
         );
         if (!foundUser) {
             let hashPassword = await bcrypt.hash(req.body.password, 10);
