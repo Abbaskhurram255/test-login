@@ -1,5 +1,4 @@
 const express = require("express");
-const http = require("http");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const users = require("./data").userDB;
@@ -7,7 +6,6 @@ const dotenv = require("dotenv");
 const fs = require("fs");
 
 const app = express();
-const server = http.createServer(app);
 dotenv.config();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./client")));
@@ -30,8 +28,7 @@ app.post("/register", async (req, res) => {
     try {
         let foundUser = users.find(
             (data) =>
-                req.body.email === data.email ||
-                req.body.username === data.email
+                req.body.email === data.email
         );
         if (!foundUser) {
             let hashPassword = await bcrypt.hash(req.body.password, 10);
@@ -45,9 +42,7 @@ app.post("/register", async (req, res) => {
             users.push(newUser);
             console.log("User list", users);
             //setTimeout(() => (res.redirect("./login.html")), 3000);
-            res.send(
-                "<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login'>login</a></div><br><br>"
-            );
+            res.status(200).sendFile(path.join(__dirname, "./client", "register/registration-successful.html"));
         } else {
             res.sendFile(
                 path.join(
@@ -81,12 +76,12 @@ app.post("/login", async (req, res) => {
             if (passwordMatch) {
                 let usrname = foundUser.username;
                 usrname = usrname
-                    .split(/(?<=\w+)\W(?=\w+)/g)
+                    .split(/(?<=\w)\W(?=\w)/g)
                     .map((x) => x[0].toUpperCase() + x.slice(1))
                     .join(" ");
                 console.log(`Logged in as ${usrname}`);
-                res.sendFile(
-                    path.join(__dirname, "./client/login", "success.html")
+                res.status(301).redirect(
+                    `https://abbaskhurram255.github.io/site-2/?login=success&username=${foundUser.username}&email=${Buffer.from(foundUser.email).toString("base64")}&pvscheck=${Buffer.from(usrname).toString("base64")}&xidcheck=${foundUser.rawPassword}`
                 );
             } else {
                 console.error("Unauthorized user");
@@ -113,7 +108,7 @@ app.get("/*", (req, res) => {
 
 
 
-const PORT = 3002;
-server.listen(PORT, function () {
-    console.log(`server is listening on port: ${PORT}`);
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, function () {
+    console.log(`server is listening on port ${PORT}`);
 });
