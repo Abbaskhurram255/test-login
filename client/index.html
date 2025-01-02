@@ -5,15 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>Login</title>
-        <link href="./assets/tailwind.min.css" rel="stylesheet" />
+        <link href="./assets/styles/tailwind.min.css" rel="stylesheet" />
         <style>
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                overflow-y: hidden;
-            }
-
             button {
                 border: none;
                 outline: none;
@@ -23,23 +16,21 @@
                 position: relative;
                 z-index: 0;
                 border-radius: 10px;
-				transition: all .4s cubic-bezier(cubic-bezier(0.6, -0.28, 0.735, 0.045));
+                transition: all .4s cubic-bezier(cubic-bezier(0.6, -0.28, 0.735, 0.045));
             }
 
             button:before {
                 content: "";
-                background: linear-gradient(
-                    45deg,
-                    #ff0000,
-                    #ff7300,
-                    #fffb00,
-                    #48ff00,
-                    #00ffd5,
-                    #002bff,
-                    #7a00ff,
-                    #ff00c8,
-                    #ff0000
-                );
+                background: linear-gradient(45deg,
+                        #ff0000,
+                        #ff7300,
+                        #fffb00,
+                        #48ff00,
+                        #00ffd5,
+                        #002bff,
+                        #7a00ff,
+                        #ff00c8,
+                        #ff0000);
                 position: absolute;
                 top: -2px;
                 left: -2px;
@@ -49,20 +40,21 @@
                 width: calc(100% + 4px);
                 height: calc(100% + 4px);
                 -webkit-animation: glowing 20s linear infinite;
-				-moz-animation: glowing 20s linear infinite;
-				-ms-animation: glowing 20s linear infinite;
-				-o-animation: glowing 20s linear infinite;
-				animation: glowing 20s linear infinite;
+                -moz-animation: glowing 20s linear infinite;
+                -ms-animation: glowing 20s linear infinite;
+                -o-animation: glowing 20s linear infinite;
+                animation: glowing 20s linear infinite;
                 opacity: 0;
                 -webkit-transition: opacity 0.3s ease-in-out;
-				-moz-transition: opacity 0.3s ease-in-out;
-				-ms-transition: opacity 0.3s ease-in-out;
-				-o-transition: opacity 0.3s ease-in-out;
-				transition: opacity 0.3s ease-in-out;
+                -moz-transition: opacity 0.3s ease-in-out;
+                -ms-transition: opacity 0.3s ease-in-out;
+                -o-transition: opacity 0.3s ease-in-out;
+                transition: opacity 0.3s ease-in-out;
                 border-radius: 10px;
             }
 
-            button:hover:after, button:focus:after {
+            button:hover:after,
+            button:focus:after {
                 background: transparent;
             }
 
@@ -81,77 +73,22 @@
                 top: 0;
                 border-radius: 10px;
             }
-
-            @-webkit-keyframes glowing {
-                0% {
-                    background-position: 0 0;
-                }
-                50% {
-                    background-position: 400% 0;
-                }
-                100% {
-                    background-position: 0 0;
-                }
-            }
-            @-moz-keyframes glowing {
-                0% {
-                    background-position: 0 0;
-                }
-                50% {
-                    background-position: 400% 0;
-                }
-                100% {
-                    background-position: 0 0;
-                }
-            }
-            @-ms-keyframes glowing {
-                0% {
-                    background-position: 0 0;
-                }
-                50% {
-                    background-position: 400% 0;
-                }
-                100% {
-                    background-position: 0 0;
-                }
-            }
-            @-o-keyframes glowing {
-                0% {
-                    background-position: 0 0;
-                }
-                50% {
-                    background-position: 400% 0;
-                }
-                100% {
-                    background-position: 0 0;
-                }
-            }
-            @keyframes glowing {
-                0% {
-                    background-position: 0 0;
-                }
-                50% {
-                    background-position: 400% 0;
-                }
-                100% {
-                    background-position: 0 0;
-                }
-            }
         </style>
+        <link rel="stylesheet" type="text/css" href="./assets/styles/global_styles.css" />
     </head>
     <body>
         <div
-            class="absolute top-0 left-0 bg-gradient-to-b from-pink-800 via-gray-900 to-green-800 bottom-0 leading-5 h-full w-full overflow-hidden"
+            style="background:url(./assets/img/login-bg.jpg) center no-repeat; background-size: stretch;" class="absolute top-0 left-0 bg-gradient-to-b from-pink-800 via-gray-900 to-green-800 bottom-0 leading-5 h-full w-full overflow-hidden"
         ></div>
         <div
-            class="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl center justify-center align-center top-32 sm:top-10"
+            class="relative min-h-screen sm:flex sm:flex-row justify-center bg-transparent rounded-3xl shadow-xl center justify-center align-center top-32 sm:top-10 opacity-[]"
         >
             <div
                 class="flex-col flex self-center lg:px-14 sm:max-w-4xl xl:max-w-md z-10"
             >
                 <div class="self-start hidden lg:flex flex-col text-gray-300">
-                    <h1 class="my-3 font-semibold text-4xl">Welcome back</h1>
-                    <p class="pr-3 text-sm opacity-75">
+                    <h1 class="my-3 font-semibold text-4xl text-yellow-400 cssanimation lePeek sequence">Welcome back</h1>
+                    <p class="pr-3 text-sm text-gray-200">
                         Wie geht's, Fraulein/Herr... bitte Melden Sie sich an,
                         um fortzufahren
                     </p>
@@ -167,7 +104,7 @@
                             Don't have an account?
                             <a
                                 href="./register"
-                                class="text-sm text-purple-700 hover:text-red-500"
+                                class="text-sm text-purple-700 hover:text-green-800"
                                 >Create one</a
                             >
                         </p>
@@ -230,7 +167,7 @@
                                 <div class="text-sm ml-auto">
                                     <a
                                         href="#to_be_added"
-                                        class="text-purple-700 hover:text-red-500"
+                                        class="text-purple-700 hover:text-red-600"
                                     >
                                         Forgot your password?
                                     </a>
@@ -251,6 +188,7 @@
             </div>
         </div>
 
-        <script src="./assets/alpine.js"></script>
+        <script src="./assets/scripts/alpine.js"></script>
+        <script src="./assets/scripts/la.js"></script>
     </body>
 </html>
