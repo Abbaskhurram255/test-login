@@ -4,21 +4,27 @@ const path = require("path");
 const users = require("./data").userDB;
 const dotenv = require("dotenv");
 const fs = require("fs");
+const [NodeCache, helmet, compression] = [require("node-cache"), require("helmet"), require("compression")];
 
+//configuring express
 const app = express();
 dotenv.config();
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "./client")));
-
-// setTimeout(async() => {
-//     fs.writeFile(
-//         "./client/data.json",
-//         JSON.stringify(users, null, 2),
-//         (err) => {
-//             if (err) console.log(err);
-//         }
-//     );
-// }, 4000);
+app.use((req, res, next) => {
+    res.set({
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
+    });
+    res.set({
+      "X-Powered-By": "Abbaskhurram255",
+      "Server": "Khurram's Web Servers",
+    });
+    next();
+});
+app.use(helmet());
+app.use(compression());
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "./client/index.html"));
