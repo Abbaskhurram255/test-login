@@ -8,6 +8,7 @@ const [NodeCache, helmet, compression] = [require("node-cache"), require("helmet
 
 //configuring express
 const app = express();
+const cache = new NodeCache({ stdTTL: 3600 });
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
