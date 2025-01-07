@@ -21,6 +21,25 @@ app.use((req, res, next) => {
       "X-Powered-By": "Abbaskhurram255",
       "Server": "Khurram's Web Servers",
     });
+    
+    let cacheKey = req.originalUrl;
+    let cachedResponse = cache.get(cacheKey);
+    if (cachedResponse) {
+    	// If cached, restore both headers and body from cache
+    	const { headers, body } = cachedResponse;
+    	res.set(headers);
+    	res.set('X-Cache', 'HIT');
+    	return res.send(body);
+    }
+
+    // If not cached, proceed with request and cache the response
+    const originalSend = res.send;
+    res.send = body => {
+    	const headers = res.getHeaders(); // Capture response headers
+    	// Cache both headers and body
+    	cache.set(cacheKey, { headers, body });
+    	originalSend.call(res, body); // Proceed with original response
+    };
     next();
 });
 app.use(helmet());
