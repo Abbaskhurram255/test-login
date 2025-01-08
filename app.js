@@ -43,7 +43,11 @@ app.use((req, res, next) => {
     };
     next();
 });
-app.use(helmet({hidePoweredBy: false}));
+app.use(
+    helmet({
+        hidePoweredBy: false,
+    })
+);
 app.use(compression());
 
 app.get("/", (req, res) => {
