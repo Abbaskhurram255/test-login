@@ -14,13 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
     res.set({
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
-    });
-    res.set({
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
       "X-Powered-By": "Abbaskhurram255",
       "Server": "Khurram's Web Servers",
+      "App": "Login",
+      "Version": "1.0.0",
     });
     
     let cacheKey = req.originalUrl;
@@ -43,7 +43,7 @@ app.use((req, res, next) => {
     };
     next();
 });
-app.use(helmet());
+app.use(helmet({hidePoweredBy: false}));
 app.use(compression());
 
 app.get("/", (req, res) => {
