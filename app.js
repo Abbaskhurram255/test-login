@@ -13,15 +13,20 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
-    res.set({
-      Accept: "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
-      "X-Powered-By": "Abbaskhurram255",
-      "Server": "Khurram's Web Servers",
-      "App": "Login",
-      "Version": "1.0.0",
-    });
+    let meta = {
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE",
+        "X-Powered-By": "https://github.com/Abbaskhurram255",
+        "App-Name": "Login",
+        "App-Author": "Abbaskhurram255",
+        "App-Company": "Khurram's Web Servers",
+        "App-Support-Mail": "abbaskhurram255@gmail.com",
+        "App-Support-Phone": "+923012965459",
+        "App-License": "MIT",
+        "App-Version": "1.0.0",
+    };
+    res.set(meta);
     
     let cacheKey = req.originalUrl;
     let cachedResponse = cache.get(cacheKey);
