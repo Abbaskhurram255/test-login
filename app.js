@@ -34,9 +34,9 @@ app.use((req, res, next) => {
     }
 
     // If not cached, proceed with request and cache the response
-    const originalSend = res.send;
+    let originalSend = res.send;
     res.send = body => {
-    	const headers = res.getHeaders(); // Capture response headers
+    	let headers = res.getHeaders(); // Capture response headers
     	// Cache both headers and body
     	cache.set(cacheKey, { headers, body });
     	originalSend.call(res, body); // Proceed with original response
