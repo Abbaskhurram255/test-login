@@ -12,6 +12,7 @@ const cache = new NodeCache({ stdTTL: 3600 });
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/", express.static(path.join(__dirname, "client")));
 app.use((req, res, next) => {
     let meta = {
         Accept: "application/json",
@@ -51,12 +52,19 @@ app.use((req, res, next) => {
 app.use(
     helmet({
         hidePoweredBy: false,
+    },
+        {
+            contentSecurityPolicy: {
+                directives: {
+                    defaultSrc: ["'self'"],
+                },
+            },
     })
 );
 app.use(compression());
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/index.html"));
+    res.sendFile(path.join(__dirname, "client/index.html"));
 });
 
 app.post("/register", async (req, res) => {
