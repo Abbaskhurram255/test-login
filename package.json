@@ -2,7 +2,7 @@
   "name": "node-login",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "compression": "^1.7.5",
@@ -16,8 +16,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "dev": "nodemon app.js",
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js",
     "lint": "eslint."
   },
   "keywords": [],
