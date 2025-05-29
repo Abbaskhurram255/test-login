@@ -13,6 +13,9 @@
 ::selection {
     background: yellowgreen;
 }
+input.text-sm.text-gray-800.focus\:text-gray-100.px-4.py-3.rounded-lg.w-full.bg-gray-200.focus\:bg-gray-800.border.border-gray-200.focus\:outline-none.focus\:border-purple-400::selection {
+    color: #000 !important;
+}
 body {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
